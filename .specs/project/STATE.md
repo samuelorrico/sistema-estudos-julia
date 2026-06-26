@@ -1,7 +1,9 @@
 # State
 
 **Last Updated:** 2026-06-26
-**Current Work:** M1 — Fundação. Scaffold Next.js criado em `web/`. Próximo: shadcn/ui → Drizzle/Neon → Auth.js.
+**Current Work:** M1 — Fundação. shadcn/ui + landing prontos (build OK). Próximo: Drizzle + Neon (precisa da `DATABASE_URL`) → Auth.js.
+
+**Stack notável:** Next.js **16** + React **19**; shadcn sobre **Base UI** (`Button` sem `asChild` — usar `buttonVariants` no `Link` ou prop `render`). Rotas tipadas ativas (links só para rotas existentes).
 
 ---
 

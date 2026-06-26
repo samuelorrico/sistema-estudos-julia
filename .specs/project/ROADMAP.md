@@ -15,7 +15,7 @@
 **Fundação do projeto** - IN PROGRESS
 
 - [x] Scaffold Next.js + TypeScript + Tailwind (App Router) em `web/`
-- [ ] shadcn/ui
+- [x] shadcn/ui + página inicial + rotas stub (/treino, /desempenho)
 - [ ] Banco Neon + Drizzle (schema inicial) + migrações
 - [ ] Auth.js com login simples
 - [ ] Deploy inicial na Vercel
