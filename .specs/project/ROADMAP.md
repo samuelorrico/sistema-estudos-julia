@@ -16,7 +16,7 @@
 
 - [x] Scaffold Next.js + TypeScript + Tailwind (App Router) em `web/`
 - [x] shadcn/ui + página inicial + rotas stub (/treino, /desempenho)
-- [ ] Banco Neon + Drizzle (schema inicial) + migrações
+- [x] Banco Neon + Drizzle (schema `questoes` + migração aplicada)
 - [ ] Auth.js com login simples
 - [ ] Deploy inicial na Vercel
 

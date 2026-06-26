@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-06-26
-**Current Work:** M1 — Fundação. shadcn/ui + landing prontos (build OK). Próximo: Drizzle + Neon (precisa da `DATABASE_URL`) → Auth.js.
+**Current Work:** M1 — Fundação. Drizzle + Neon configurados; tabela `questoes` migrada (build OK). Próximo: camada de dados/seed (quando chegarem os PROSEFs) e Auth.js.
 
 **Stack notável:** Next.js **16** + React **19**; shadcn sobre **Base UI** (`Button` sem `asChild` — usar `buttonVariants` no `Link` ou prop `render`). Rotas tipadas ativas (links só para rotas existentes).
 
