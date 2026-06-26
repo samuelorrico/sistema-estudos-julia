@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-06-26
-**Current Work:** Inicialização do projeto — documentação (fase Specify). Repositório vazio criado; pronto para conectar.
+**Current Work:** M1 — Fundação. Scaffold Next.js criado em `web/`. Próximo: shadcn/ui → Drizzle/Neon → Auth.js.
 
 ---
 
@@ -64,7 +64,8 @@
 
 | #   | Description | Date | Commit | Status |
 | --- | ----------- | ---- | ------ | ------ |
-| —   | —           | —    | —      | —      |
+| 001 | Conectar repo + push da documentação (.specs) | 2026-06-26 | 36d0b4b | ✅ Done |
+| 002 | Scaffold Next.js em `web/` (TS, Tailwind, App Router) | 2026-06-26 | — | ✅ Done |
 
 ---
 
@@ -80,7 +81,7 @@
 
 - [ ] Obter o PDF do edital EBMSP 2026.2 (Psicologia) para calibrar pesos (ver B-001)
 - [ ] Baixar os 3 últimos PROSEFs de Psicologia (materiais.bahiana.edu.br/provas-psicologia, via formulário) — fonte do banco
-- [ ] Conectar ao repositório github.com/samuelorrico/sistema-estudos-julia (git init + remote origin; commit dos .specs pendente de OK)
+- [x] Conectar ao repositório github.com/samuelorrico/sistema-estudos-julia (feito; `main` pushado)
 - [ ] Definir local/nome final do app no scaffold (M1) quando partirmos para código
 
 ---

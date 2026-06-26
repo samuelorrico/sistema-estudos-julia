@@ -1,7 +1,7 @@
 # Roadmap
 
 **Current Milestone:** M1 — Fundação + Banco de Questões
-**Status:** Planning
+**Status:** In Progress
 
 ---
 
@@ -12,12 +12,13 @@
 
 ### Features
 
-**Fundação do projeto** - PLANNED
+**Fundação do projeto** - IN PROGRESS
 
-- Scaffold Next.js + TypeScript + Tailwind + shadcn/ui
-- Banco Neon + Drizzle (schema inicial) + migrações
-- Auth.js com login simples
-- Deploy inicial na Vercel
+- [x] Scaffold Next.js + TypeScript + Tailwind (App Router) em `web/`
+- [ ] shadcn/ui
+- [ ] Banco Neon + Drizzle (schema inicial) + migrações
+- [ ] Auth.js com login simples
+- [ ] Deploy inicial na Vercel
 
 **Banco de questões + filtros** - PLANNED  *(spec: features/banco-questoes/spec.md)*
 
