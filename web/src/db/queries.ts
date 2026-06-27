@@ -12,6 +12,7 @@ export type FiltroQuestoes = {
   materia?: Materia;
   assunto?: string;
   dificuldade?: Dificuldade;
+  fonte?: string;
   limite?: number;
 };
 
@@ -32,6 +33,7 @@ function condicoes(f: FiltroQuestoes): SQL | undefined {
   if (f.materia) conds.push(eq(questoes.materia, f.materia));
   if (f.assunto) conds.push(eq(questoes.assunto, f.assunto));
   if (f.dificuldade) conds.push(eq(questoes.dificuldade, f.dificuldade));
+  if (f.fonte) conds.push(eq(questoes.fonte, f.fonte));
   return conds.length ? and(...conds) : undefined;
 }
 
@@ -77,6 +79,33 @@ export async function assuntosComContagem(
     .where(materia ? eq(questoes.materia, materia) : undefined)
     .groupBy(questoes.assunto)
     .orderBy(asc(questoes.assunto));
+}
+
+/** Provas/fontes disponíveis com contagem e ano, ordenadas por ano desc. */
+export async function fontesComContagem(): Promise<
+  { fonte: string; total: number; ano: number | null }[]
+> {
+  const rows = await db
+    .select({
+      fonte: questoes.fonte,
+      total: sql<number>`count(*)::int`,
+      ano: sql<number | null>`max(${questoes.ano})`,
+    })
+    .from(questoes)
+    .groupBy(questoes.fonte);
+  return rows.sort(
+    (a, b) =>
+      (b.ano ?? 0) - (a.ano ?? 0) || a.fonte.localeCompare(b.fonte, "pt-BR"),
+  );
+}
+
+/** Todas as questões de uma prova, na ordem original (por número). */
+export async function questoesPorFonte(fonte: string): Promise<Questao[]> {
+  return db
+    .select()
+    .from(questoes)
+    .where(eq(questoes.fonte, fonte))
+    .orderBy(asc(questoes.numero), asc(questoes.id));
 }
 
 /** Uma questão por id (revisão/feedback). */

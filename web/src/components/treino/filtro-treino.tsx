@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import {
   DIFICULDADES,
   DIFICULDADE_LABEL,
+  rotuloFonte,
   type Dificuldade,
   type Materia,
 } from "@/lib/materias";
@@ -13,30 +14,49 @@ import {
 type Props = {
   materias: { materia: Materia; rotulo: string; total: number }[];
   assuntos: { assunto: string; total: number }[];
-  valores: { materia?: Materia; assunto?: string; dificuldade?: Dificuldade };
+  fontes: { fonte: string; total: number; ano: number | null }[];
+  valores: {
+    materia?: Materia;
+    assunto?: string;
+    dificuldade?: Dificuldade;
+    fonte?: string;
+  };
   total: number;
 };
 
 const selectCls =
   "h-9 min-w-44 flex-1 rounded-lg border border-border bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:opacity-50";
 
-export function FiltroTreino({ materias, assuntos, valores, total }: Props) {
+export function FiltroTreino({
+  materias,
+  assuntos,
+  fontes,
+  valores,
+  total,
+}: Props) {
   const router = useRouter();
 
   function navega(next: {
     materia?: string;
     assunto?: string;
     dificuldade?: string;
+    fonte?: string;
   }) {
     const params = new URLSearchParams();
     if (next.materia) params.set("materia", next.materia);
     if (next.assunto) params.set("assunto", next.assunto);
     if (next.dificuldade) params.set("dificuldade", next.dificuldade);
+    if (next.fonte) params.set("fonte", next.fonte);
     const qs = params.toString();
     router.push(qs ? `/treino?${qs}` : "/treino");
   }
 
-  const temFiltro = !!(valores.materia || valores.assunto || valores.dificuldade);
+  const temFiltro = !!(
+    valores.materia ||
+    valores.assunto ||
+    valores.dificuldade ||
+    valores.fonte
+  );
 
   return (
     <div className="flex flex-col gap-3">
@@ -49,6 +69,7 @@ export function FiltroTreino({ materias, assuntos, valores, total }: Props) {
             navega({
               materia: e.target.value || undefined,
               dificuldade: valores.dificuldade,
+              fonte: valores.fonte,
             })
           }
         >
@@ -70,6 +91,7 @@ export function FiltroTreino({ materias, assuntos, valores, total }: Props) {
               materia: valores.materia,
               assunto: e.target.value || undefined,
               dificuldade: valores.dificuldade,
+              fonte: valores.fonte,
             })
           }
         >
@@ -92,6 +114,7 @@ export function FiltroTreino({ materias, assuntos, valores, total }: Props) {
               materia: valores.materia,
               assunto: valores.assunto,
               dificuldade: e.target.value || undefined,
+              fonte: valores.fonte,
             })
           }
         >
@@ -99,6 +122,27 @@ export function FiltroTreino({ materias, assuntos, valores, total }: Props) {
           {DIFICULDADES.map((d) => (
             <option key={d} value={d}>
               {DIFICULDADE_LABEL[d]}
+            </option>
+          ))}
+        </select>
+
+        <select
+          aria-label="Prova"
+          className={selectCls}
+          value={valores.fonte ?? ""}
+          onChange={(e) =>
+            navega({
+              materia: valores.materia,
+              assunto: valores.assunto,
+              dificuldade: valores.dificuldade,
+              fonte: e.target.value || undefined,
+            })
+          }
+        >
+          <option value="">Todas as provas</option>
+          {fontes.map((f) => (
+            <option key={f.fonte} value={f.fonte}>
+              {rotuloFonte(f.fonte)} ({f.total})
             </option>
           ))}
         </select>

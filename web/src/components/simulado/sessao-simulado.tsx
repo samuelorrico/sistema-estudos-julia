@@ -8,10 +8,16 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Questao } from "@/db/schema";
 
-const CORTE_ELIMINATORIO = 6; // < 6/30 elimina (edital PROSEL 2026.2)
-
-export function SessaoSimulado({ questoes }: { questoes: Questao[] }) {
+export function SessaoSimulado({
+  questoes,
+  // < 6/30 elimina no edital PROSEL 2026.2 (20%); escala para provas de outro tamanho.
+  corte = Math.max(1, Math.round(questoes.length / 5)),
+}: {
+  questoes: Questao[];
+  corte?: number;
+}) {
   const total = questoes.length;
+  const CORTE_ELIMINATORIO = corte;
   const [respostas, setRespostas] = useState<Record<number, string>>({});
   const [idx, setIdx] = useState(0);
   const [finalizado, setFinalizado] = useState(false);

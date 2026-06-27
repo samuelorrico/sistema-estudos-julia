@@ -5,6 +5,7 @@ import { SessaoTreino } from "@/components/treino/sessao-treino";
 import {
   assuntosComContagem,
   contarQuestoes,
+  fontesComContagem,
   listarQuestoes,
   materiasComContagem,
 } from "@/db/queries";
@@ -34,17 +35,19 @@ export default async function TreinoPage({
   const dificuldade: Dificuldade | undefined = ehDificuldade(sp.dificuldade)
     ? sp.dificuldade
     : undefined;
+  const fonte = typeof sp.fonte === "string" ? sp.fonte : undefined;
 
-  const filtro = { materia, assunto, dificuldade };
+  const filtro = { materia, assunto, dificuldade, fonte };
 
-  const [materias, assuntos, total, questoes] = await Promise.all([
+  const [materias, assuntos, fontes, total, questoes] = await Promise.all([
     materiasComContagem(),
     materia ? assuntosComContagem(materia) : Promise.resolve([]),
+    fontesComContagem(),
     contarQuestoes(filtro),
     listarQuestoes({ ...filtro, limite: 30 }),
   ]);
 
-  const chave = `${materia ?? ""}|${assunto ?? ""}|${dificuldade ?? ""}`;
+  const chave = `${materia ?? ""}|${assunto ?? ""}|${dificuldade ?? ""}|${fonte ?? ""}`;
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10">
@@ -65,6 +68,7 @@ export default async function TreinoPage({
       <FiltroTreino
         materias={materias}
         assuntos={assuntos}
+        fontes={fontes}
         valores={filtro}
         total={total}
       />
