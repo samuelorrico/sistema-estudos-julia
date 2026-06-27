@@ -71,7 +71,13 @@ export default function Home() {
         ))}
       </section>
 
-      <section className="mt-8">
+      <section className="mt-8 flex flex-wrap justify-center gap-3">
+        <Link
+          href="/tutor"
+          className={buttonVariants({ variant: "outline" })}
+        >
+          🤖 Tutor de IA
+        </Link>
         <Link
           href="/desempenho"
           className={buttonVariants({ variant: "outline" })}
