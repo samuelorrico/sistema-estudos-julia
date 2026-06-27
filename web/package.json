@@ -11,13 +11,15 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "tsx src/db/seed.ts"
+    "db:seed": "tsx src/db/seed.ts",
+    "blob:upload": "tsx scripts/upload-figuras.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.0",
     "@ai-sdk/google": "^4.0.1",
     "@base-ui/react": "^1.6.0",
     "@neondatabase/serverless": "^1.1.0",
+    "@vercel/blob": "^2.5.0",
     "ai": "^7.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

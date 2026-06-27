@@ -10,6 +10,13 @@ import {
 } from "@/lib/materias";
 import type { Questao } from "@/db/schema";
 
+// Em produção, as figuras são servidas pelo Vercel Blob (NEXT_PUBLIC_BLOB_BASE);
+// em dev, ficam locais em /public/questoes.
+const BLOB_BASE = process.env.NEXT_PUBLIC_BLOB_BASE ?? "";
+function srcFigura(src: string): string {
+  return BLOB_BASE && src.startsWith("/questoes/") ? `${BLOB_BASE}${src}` : src;
+}
+
 type Props = {
   questao: Questao;
   /** id da alternativa marcada (ex.: "A") ou null */
@@ -86,7 +93,7 @@ export function QuestaoView({
             // eslint-disable-next-line @next/next/no-img-element
             <img
               key={img.src}
-              src={img.src}
+              src={srcFigura(img.src)}
               alt={img.alt}
               className="max-h-[420px] w-auto self-center rounded-lg border bg-white object-contain"
             />
