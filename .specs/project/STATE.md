@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-06-27
-**Current Work:** App pronto e em deploy. Banco: 110 questões + 31 flashcards (Neon). 3 modos + **gate de senha** (`APP_PASSCODE`) + **tutor de IA via Gemini grátis** (auto-detecta `GOOGLE_GEMINI_API_KEY`/`GOOGLE_GENERATIVE_AI_API_KEY`, senão Claude — testado OK) + **figuras no Vercel Blob** (`npm run blob:upload` → `NEXT_PUBLIC_BLOB_BASE`). Falta só o usuário setar as env vars na Vercel + redeploy. Próximo: painel de desempenho (M2).
+**Current Work:** App pronto e em deploy. Banco: **140 questões** + 31 flashcards (Neon) — inclui a **PROSEF EBMSP Área de Saúde 2025.1** (30 q, formato IDÊNTICO ao de Psicologia). Pendente: extrair **PROSEF Área de Saúde 2020.1, 2021.1, 2021.2** (PDFs no Downloads; gabaritos já em mãos) — exigem parser POR POSIÇÃO porque o nº da questão é imagem (badge) e o layout de 2 colunas embaralha enunciado/alternativas. Gabaritos: 2020.1 [1A2D3A4B5B6B7D8B9C10B11E12C13D14A15E16D17C18D19C20D21D22B23D24C25B26B27C28E29D30B]; 2021.1 [1E2D3E4A5C6B7A8D9C10B11A12B13B14C15E16E17D18C19E20D21E22B23B24E25D26C27A28E29C30C]; 2021.2 [1D2B3E4A5C6B7D8E9C10A11E12E13A14D15C16E17B18B19E20B21C22B23A24C25C26B27E28D29E30C]. 3 modos + **gate de senha** (`APP_PASSCODE`) + **tutor de IA via Gemini grátis** (auto-detecta `GOOGLE_GEMINI_API_KEY`/`GOOGLE_GENERATIVE_AI_API_KEY`, senão Claude — testado OK) + **figuras no Vercel Blob** (`npm run blob:upload` → `NEXT_PUBLIC_BLOB_BASE`). Falta só o usuário setar as env vars na Vercel + redeploy. Próximo: painel de desempenho (M2).
 
 **Stack notável:** Next.js **16** + React **19**; shadcn sobre **Base UI** (`Button` sem `asChild` — usar `buttonVariants` no `Link` ou prop `render`). Rotas tipadas ativas (links só para rotas existentes).
 
