@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-06-27
-**Current Work:** App funcional ponta a ponta. **Banco: 110 questões reais + 31 flashcards** no Neon. **Os 3 modos prontos** (Treino, Simulado, Flashcards) + **agente de IA** (gera questões padrão Strix; só falta a `ANTHROPIC_API_KEY` para usar). Build de produção passando. Próximo: deploy na Vercel (figuras precisam de Blob/repo privado) e painel de desempenho (M2).
+**Current Work:** App pronto e em deploy. Banco: 110 questões + 31 flashcards (Neon). 3 modos + **gate de senha** (`APP_PASSCODE`) + **tutor de IA via Gemini grátis** (auto-detecta `GOOGLE_GEMINI_API_KEY`/`GOOGLE_GENERATIVE_AI_API_KEY`, senão Claude — testado OK) + **figuras no Vercel Blob** (`npm run blob:upload` → `NEXT_PUBLIC_BLOB_BASE`). Falta só o usuário setar as env vars na Vercel + redeploy. Próximo: painel de desempenho (M2).
 
 **Stack notável:** Next.js **16** + React **19**; shadcn sobre **Base UI** (`Button` sem `asChild` — usar `buttonVariants` no `Link` ou prop `render`). Rotas tipadas ativas (links só para rotas existentes).
 
@@ -112,8 +112,10 @@ _(nenhum ativo)_
 - [x] ~~Camada de dados/queries~~ — feito (`db/queries.ts`)
 - [x] ~~Criar tabela `flashcards`~~ — feito (migração 0002 + 31 conceitos)
 - [x] ~~Lib de animação~~ — **CSS/keyframes** em `globals.css` (sem dep nova; respeita `prefers-reduced-motion`)
-- [x] ~~Wiring do agente de IA~~ — feito (`lib/agente.ts` + `/tutor`); **falta só a `ANTHROPIC_API_KEY`** em `web/.env.local` para usar
-- [ ] Deploy na Vercel: hospedar figuras (Vercel Blob ou repo privado) — hoje servidas localmente (gitignoradas)
+- [x] ~~Wiring do agente de IA~~ — feito; provider auto-detectável (**Gemini grátis** por padrão, ou Claude); testado gerando questão válida
+- [x] ~~Gate de senha~~ — `middleware.ts` + `/login` (AD-005 mantido: usuária única, não multiusuário)
+- [x] ~~Hospedar figuras (Vercel Blob)~~ — `scripts/upload-figuras.ts` + `NEXT_PUBLIC_BLOB_BASE`; 75 figuras enviadas
+- [ ] **Vercel:** setar env (`DATABASE_URL`, `APP_PASSCODE`, `GOOGLE_GEMINI_API_KEY`, `BLOB_READ_WRITE_TOKEN`, `NEXT_PUBLIC_BLOB_BASE`) + redeploy
 - [ ] Painel de desempenho (M2): persistir tentativas e mostrar acertos por matéria/assunto
 - [ ] Cladograma da UNIT Q33 e digestão da ZARNS Q33 são vetoriais (sem raster) — 2 questões sem figura
 
