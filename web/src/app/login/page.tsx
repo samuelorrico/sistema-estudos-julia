@@ -25,7 +25,13 @@ export default function LoginPage() {
             Mapa de Estudos da Juju
           </h1>
           <p className="text-sm text-muted-foreground">
-            Área da Juju 💛 — digite a senha para entrar.
+            Área da Juju{" "}
+            <Icon
+              name="favorite"
+              filled
+              className="inline-block align-middle text-[18px] text-pink-500 animate-heartbeat"
+            />{" "}
+            — digite a senha para entrar.
           </p>
         </div>
 

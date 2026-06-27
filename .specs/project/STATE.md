@@ -116,7 +116,7 @@ _(nenhum ativo)_
 - [x] ~~Gate de senha~~ — `middleware.ts` + `/login` (AD-005 mantido: usuária única, não multiusuário)
 - [x] ~~Hospedar figuras (Vercel Blob)~~ — `scripts/upload-figuras.ts` + `NEXT_PUBLIC_BLOB_BASE`; 75 figuras enviadas
 - [ ] **Vercel:** setar env (`DATABASE_URL`, `APP_PASSCODE`, `GOOGLE_GEMINI_API_KEY`, `BLOB_READ_WRITE_TOKEN`, `NEXT_PUBLIC_BLOB_BASE`) + redeploy
-- [ ] Painel de desempenho (M2): persistir tentativas e mostrar acertos por matéria/assunto
+- [ ] **Painel de desempenho + histórico de questões (M2):** persistir cada tentativa (questão, acerto/erro, data) e mostrar acertos por matéria/assunto + quais questões ela já fez. **FAZER POR ÚLTIMO** — só quando o Samuel parar de mexer e a Juju for a única usuária, para os testes dele não poluírem as estatísticas dela. (Pedido explícito do usuário.)
 - [ ] Cladograma da UNIT Q33 e digestão da ZARNS Q33 são vetoriais (sem raster) — 2 questões sem figura
 
 ---
