@@ -2,10 +2,11 @@ import "server-only";
 import { and, asc, eq, sql, type SQL } from "drizzle-orm";
 
 import { db } from "./index";
-import { materiaEnum, questoes, type Questao } from "./schema";
+import { questoes, type Questao } from "./schema";
+import { rotuloMateria, type Dificuldade, type Materia } from "@/lib/materias";
 
-export type Materia = (typeof materiaEnum.enumValues)[number];
-export type Dificuldade = "facil" | "media" | "dificil";
+export { rotuloMateria };
+export type { Dificuldade, Materia };
 
 export type FiltroQuestoes = {
   materia?: Materia;
@@ -13,21 +14,6 @@ export type FiltroQuestoes = {
   dificuldade?: Dificuldade;
   limite?: number;
 };
-
-const MATERIA_LABEL: Record<Materia, string> = {
-  portugues: "Português",
-  ingles: "Inglês",
-  historia: "História",
-  geografia: "Geografia",
-  matematica: "Matemática",
-  biologia: "Biologia",
-  fisica: "Física",
-  quimica: "Química",
-};
-
-export function rotuloMateria(m: Materia): string {
-  return MATERIA_LABEL[m] ?? m;
-}
 
 // Distribuição oficial da prova objetiva (PROSEL 2026.2): 30 questões.
 const COTAS_SIMULADO: Record<Materia, number> = {
