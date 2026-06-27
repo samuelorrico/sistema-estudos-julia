@@ -1,6 +1,7 @@
 import "server-only";
 
 import { anthropic } from "@ai-sdk/anthropic";
+import { google } from "@ai-sdk/google";
 import { generateObject } from "ai";
 import { z } from "zod";
 
@@ -12,7 +13,17 @@ import {
   type Materia,
 } from "@/lib/materias";
 
-const MODELO = "claude-opus-4-8";
+// Provider de IA: usa o Gemini (grátis) se a chave do Google existir; senão,
+// o Claude. Dá pra começar de graça e trocar só adicionando a outra chave.
+function resolverModelo() {
+  if (process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    return { modelo: google("gemini-2.5-flash"), nome: "Gemini 2.5 Flash (grátis)" };
+  }
+  if (process.env.ANTHROPIC_API_KEY) {
+    return { modelo: anthropic("claude-opus-4-8"), nome: "Claude Opus 4.8" };
+  }
+  return null;
+}
 
 const alternativaSchema = z.object({
   id: z.enum(["A", "B", "C", "D", "E"]),
@@ -58,8 +69,12 @@ REGRAS:
 - Não use imagens (apenas texto). Não copie questões reais existentes — crie inéditas no mesmo padrão.
 - "assunto" deve ser específico (ex.: "Genética (herança ligada ao sexo)", "Funções da linguagem", "Hidrostática").`;
 
-export function temChaveAnthropic(): boolean {
-  return !!process.env.ANTHROPIC_API_KEY;
+export function temChaveIA(): boolean {
+  return resolverModelo() !== null;
+}
+
+export function provedorAtivo(): string | null {
+  return resolverModelo()?.nome ?? null;
 }
 
 export type PedidoGeracao = {
@@ -72,9 +87,10 @@ export type PedidoGeracao = {
 export async function gerarQuestoes(
   pedido: PedidoGeracao,
 ): Promise<QuestaoGerada[]> {
-  if (!temChaveAnthropic()) {
+  const m = resolverModelo();
+  if (!m) {
     throw new Error(
-      "ANTHROPIC_API_KEY não configurada. Adicione a chave em web/.env.local.",
+      "Nenhuma chave de IA configurada. Defina GOOGLE_GENERATIVE_AI_API_KEY (grátis) ou ANTHROPIC_API_KEY em web/.env.local.",
     );
   }
 
@@ -97,7 +113,7 @@ export async function gerarQuestoes(
   }
 
   const { object } = await generateObject({
-    model: anthropic(MODELO),
+    model: m.modelo,
     schema: z.object({ questoes: z.array(questaoGeradaSchema) }),
     system: SISTEMA,
     prompt: partes.join(" "),

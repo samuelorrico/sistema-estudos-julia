@@ -1,12 +1,13 @@
 import Link from "next/link";
 
 import { TutorGerador } from "@/components/tutor/tutor-gerador";
-import { temChaveAnthropic } from "@/lib/agente";
+import { provedorAtivo, temChaveIA } from "@/lib/agente";
 
 export const dynamic = "force-dynamic";
 
 export default function TutorPage() {
-  const temChave = temChaveAnthropic();
+  const temChave = temChaveIA();
+  const provedor = provedorAtivo();
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10">
@@ -22,24 +23,38 @@ export default function TutorPage() {
           Gere questões inéditas no padrão da banca (Strix/EBMSP) quando o banco
           não bastar — gerais ou de uma matéria/assunto específico.
         </p>
+        {temChave && provedor && (
+          <p className="text-xs text-muted-foreground">Usando: {provedor}</p>
+        )}
       </header>
 
       {temChave ? (
         <TutorGerador />
       ) : (
         <div className="flex flex-col gap-3 rounded-xl border bg-card p-6 text-sm ring-1 ring-foreground/10">
-          <p className="font-medium">🔑 Falta configurar a chave da Anthropic.</p>
+          <p className="font-medium">
+            🔑 Configure uma chave de IA para gerar questões.
+          </p>
           <p className="text-muted-foreground">
-            Para o tutor funcionar, adicione sua chave da API da Anthropic ao
-            arquivo <code className="rounded bg-muted px-1">web/.env.local</code>{" "}
-            (não versionado) e reinicie o servidor:
+            <strong className="text-foreground">Grátis (recomendado):</strong>{" "}
+            crie uma chave no Google AI Studio (
+            <code className="rounded bg-muted px-1">aistudio.google.com</code>) e
+            adicione em{" "}
+            <code className="rounded bg-muted px-1">web/.env.local</code> + na
+            Vercel:
+          </p>
+          <pre className="overflow-x-auto rounded-lg bg-muted p-3 text-xs">
+            GOOGLE_GENERATIVE_AI_API_KEY=...
+          </pre>
+          <p className="text-muted-foreground">
+            Ou, se preferir o Claude (pago):
           </p>
           <pre className="overflow-x-auto rounded-lg bg-muted p-3 text-xs">
             ANTHROPIC_API_KEY=sk-ant-...
           </pre>
           <p className="text-muted-foreground">
-            A chave fica só na sua máquina/deploy. Modelo usado:{" "}
-            <code className="rounded bg-muted px-1">claude-opus-4-8</code>.
+            Depois reinicie o servidor (local) ou faça o redeploy (Vercel). A
+            chave fica só na sua máquina/deploy.
           </p>
         </div>
       )}
