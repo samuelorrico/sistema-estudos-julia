@@ -16,6 +16,12 @@ dist/
 .env
 .env*.local
 
+# Conteúdo protegido por direito autoral (provas reais Strix/EBMSP) — NÃO versionar.
+# Dados ficam no Neon; figuras são servidas localmente. Ver AD-007 / nota de copyright.
+web/src/data/questoes/
+web/public/questoes/
+provas-fonte/
+
 # Logs e arquivos de SO
 *.log
 npm-debug.log*
