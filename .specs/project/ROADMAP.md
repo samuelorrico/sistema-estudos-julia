@@ -1,7 +1,7 @@
 # Roadmap
 
 **Current Milestone:** M1 — Fundação + Banco de Questões
-**Status:** In Progress
+**Status:** Banco + 3 modos + tutor de IA prontos (build passando). Falta deploy na Vercel. Próximo: M2 (desempenho).
 
 ---
 
@@ -21,18 +21,17 @@
 - [ ] Adicionar coluna `textoApoio` ao schema (AD-006)
 - [ ] Deploy inicial na Vercel
 
-**Banco de questões + filtros** - PLANNED  *(spec: features/banco-questoes/spec.md)*
+**Banco de questões + filtros** - DONE  *(spec: features/banco-questoes/spec.md)*
 
-- Schema de `questoes` (matéria/assunto/dificuldade/fonte/ano/alternativas/gabarito) ✅ + `textoApoio`
-- **Seed a partir das provas reais** (começar pela Bahiana Área de Saúde 2025.1 — formato idêntico)
-- Listagem com filtros combináveis
-- Modo de treino (responder, ver gabarito e explicação)
+- Schema `questoes` + `textoApoio`/`numero`/`imagens` ✅
+- **Seed das provas reais** ✅ — 110 questões (Bahiana 34 / UNIT 39 / ZARNS 37) + 31 flashcards
+- Filtros combináveis (matéria/assunto/dificuldade) ✅
 
-**Modos de estudo (3)** - PLANNED  *(spec: features/modos-estudo/spec.md)*
+**Modos de estudo (3)** - DONE  *(spec: features/modos-estudo/spec.md)*
 
-- Simulado (prova inteira) → revisão colorida ao fim (verde acerto / vermelho erro)
-- Treino (filtrado) → feedback imediato com animação
-- Flashcards (conceitos) → resposta na hora
+- Simulado (30 questões) → placar + revisão colorida ao fim (verde acerto / vermelho erro) ✅
+- Treino (filtrado) → feedback imediato com animação ✅
+- Flashcards (conceitos) → virar card, sabia/não sabia ✅
 
 ---
 
@@ -63,10 +62,11 @@
 
 ### Features
 
-**Geração de questões no padrão Strix** - PLANNED ⭐ (prioridade do usuário)
+**Geração de questões no padrão Strix** - DONE ⭐ (precisa `ANTHROPIC_API_KEY` para usar)
 
-- Gerar questões inéditas gerais ou por matéria/assunto, no padrão da banca (`padrao-strix.md`)
-- Saída estruturada (Zod) compatível com a tabela `questoes`; `fonte = "IA"`; salvar no banco
+- Gera questões inéditas gerais ou por matéria/assunto, no padrão da banca (`padrao-strix.md`) ✅
+- Saída estruturada (Zod) compatível com `questoes`; `fonte = "IA"`; prévia + salvar em `/tutor` ✅
+- Vercel AI SDK (`ai`) + `@ai-sdk/anthropic`, modelo `claude-opus-4-8`
 
 **Tutor conversacional** - PLANNED
 
