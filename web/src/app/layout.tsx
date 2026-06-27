@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   title: "Mapa de Estudos da Juju",
   description:
     "Estudo focado para o vestibular de Psicologia da EBMSP (PROSEF).",
+  // Área pessoal e protegida por senha — não deve ser indexada por buscadores.
+  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({
