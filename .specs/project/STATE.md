@@ -1,7 +1,7 @@
 # State
 
-**Last Updated:** 2026-06-26
-**Current Work:** M1/M3. Edital 2026.2 + provas reais obtidos (B-001 resolvido). Padrão Strix do agente documentado (`features/tutor-ia/padrao-strix.md`). Próximo: seed do banco a partir das provas + camada de dados; wiring do agente (precisa `ANTHROPIC_API_KEY`).
+**Last Updated:** 2026-06-27
+**Current Work:** M1. **Banco semeado: 110 questões reais** (Bahiana 34 / UNIT 39 / ZARNS 37) classificadas por matéria/assunto/dificuldade, com gabarito oficial, 22 textos de apoio e 44 figuras hospedadas. Próximo: **construir os 3 modos** (começar pelo Treino) e depois o agente (precisa `ANTHROPIC_API_KEY`).
 
 **Stack notável:** Next.js **16** + React **19**; shadcn sobre **Base UI** (`Button` sem `asChild` — usar `buttonVariants` no `Link` ou prop `render`). Rotas tipadas ativas (links só para rotas existentes).
 
@@ -90,6 +90,7 @@ _(nenhum ativo)_
 | 003 | shadcn/ui + landing + rotas stub | 2026-06-26 | 4114c4b | ✅ Done |
 | 004 | Drizzle + Neon (schema `questoes` + migração) | 2026-06-26 | f0ff43b | ✅ Done |
 | 005 | Edital 2026.2 + provas reais; padrão Strix do agente documentado | 2026-06-26 | — | ✅ Done |
+| 006 | Extração + seed de 110 questões reais (3 provas) no Neon, com figuras e classificação; `textoApoio`/`numero`/`imagens` no schema; `npm run db:seed` | 2026-06-27 | add4a61 | ✅ Done |
 
 ---
 
@@ -103,12 +104,15 @@ _(nenhum ativo)_
 
 ## Todos
 
-- [ ] Adicionar coluna `textoApoio` à tabela `questoes` (estímulo separado do enunciado) — ver AD-006
-- [ ] Extrair e semear o banco com as provas reais (começar pela Bahiana Área de Saúde 2025.1) — Quick Task futura
+- [x] ~~Adicionar coluna `textoApoio` à tabela `questoes`~~ — feito (migração 0001: `textoApoio`/`numero`/`imagens`)
+- [x] ~~Extrair e semear o banco com as provas reais~~ — feito (110 questões: Bahiana/UNIT/ZARNS)
+- [ ] **Construir os 3 modos** (Treino → Simulado → Flashcards) — ler `node_modules/next/dist/docs/` antes (Next 16 tem breaking changes)
+- [ ] Camada de dados/queries (listar por filtro, montar simulado 8/4/3/3/3/5/2/2)
 - [ ] Wiring do agente de IA (Vercel AI SDK + Claude) usando o prompt de `padrao-strix.md` — precisa `ANTHROPIC_API_KEY` em `web/.env.local`
 - [ ] Criar tabela `flashcards` (frente/verso/materia/assunto) para o Modo Flashcards
 - [ ] Escolher lib de animação (Framer Motion vs CSS) para o feedback acerto/erro
-- [ ] Definir local/nome final do app no scaffold quando partirmos para mais código
+- [ ] Hospedar figuras no deploy (Vercel Blob ou repo privado) — hoje servidas localmente (gitignoradas)
+- [ ] Cladograma da UNIT Q33 e digestão da ZARNS Q33 são vetoriais (sem raster) — questões ficaram sem figura
 
 ---
 
