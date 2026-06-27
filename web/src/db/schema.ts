@@ -56,3 +56,18 @@ export const questoes = pgTable("questoes", {
 
 export type Questao = typeof questoes.$inferSelect;
 export type NovaQuestao = typeof questoes.$inferInsert;
+
+// Flashcards: conceitos (frente = pergunta/conceito, verso = resposta).
+// fonte: "base" (curadoria inicial) ou "IA" (geradas pelo tutor — TUTOR-06).
+export const flashcards = pgTable("flashcards", {
+  id: serial("id").primaryKey(),
+  frente: text("frente").notNull(),
+  verso: text("verso").notNull(),
+  materia: materiaEnum("materia").notNull(),
+  assunto: text("assunto").notNull(),
+  fonte: text("fonte").notNull().default("base"),
+  criadoEm: timestamp("criado_em").defaultNow().notNull(),
+});
+
+export type Flashcard = typeof flashcards.$inferSelect;
+export type NovoFlashcard = typeof flashcards.$inferInsert;

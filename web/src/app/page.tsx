@@ -1,30 +1,35 @@
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import type { Route } from "next";
 
-const features = [
+import { buttonVariants } from "@/components/ui/button";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+const modos: {
+  href: Route;
+  emoji: string;
+  titulo: string;
+  descricao: string;
+}[] = [
   {
-    emoji: "🗂️",
-    titulo: "Banco de questões",
+    href: "/treino",
+    emoji: "🎯",
+    titulo: "Treino",
     descricao:
-      "Treine com questões filtráveis por matéria, assunto e dificuldade — no estilo real do PROSEF.",
+      "Questões filtradas por matéria, assunto e dificuldade — com correção e explicação na hora.",
   },
   {
-    emoji: "📊",
-    titulo: "Desempenho",
+    href: "/simulado",
+    emoji: "📝",
+    titulo: "Simulado",
     descricao:
-      "Acompanhe acertos por matéria e assunto para focar nos pontos fracos.",
+      "A prova inteira: 30 questões na distribuição oficial. Gabarito e revisão só no final.",
   },
   {
-    emoji: "🤖",
-    titulo: "Tutor de IA",
+    href: "/flashcards",
+    emoji: "⚡",
+    titulo: "Flashcards",
     descricao:
-      "Explicação de erros, geração de questões e correção de redação — personalizados.",
+      "Revisão rápida de conceitos: veja a pergunta, vire o card e marque o que já sabe.",
   },
 ];
 
@@ -39,36 +44,44 @@ export default function Home() {
           Mapa de Estudos da Juju
         </h1>
         <p className="max-w-xl text-lg text-muted-foreground">
-          Um plano de estudos focado no que a prova realmente cobra: questões no
-          estilo da banca, acompanhamento de desempenho e um tutor de IA.
+          Estudo focado no que a prova cobra: questões reais da banca em três
+          modos de treino, no estilo certo.
         </p>
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <Link href="/treino" className={buttonVariants({ size: "lg" })}>
-            Começar a estudar
-          </Link>
-          <Link
-            href="/desempenho"
-            className={buttonVariants({ size: "lg", variant: "outline" })}
-          >
-            Ver desempenho
-          </Link>
-        </div>
+        <Link href="/treino" className={buttonVariants({ size: "lg" })}>
+          Começar a estudar
+        </Link>
       </section>
 
-      <section className="mt-16 grid w-full max-w-4xl gap-6 sm:grid-cols-3">
-        {features.map((f) => (
-          <Card key={f.titulo}>
-            <CardHeader>
-              <div className="text-3xl">{f.emoji}</div>
-              <CardTitle>{f.titulo}</CardTitle>
-              <CardDescription>{f.descricao}</CardDescription>
-            </CardHeader>
-          </Card>
+      <section className="mt-14 grid w-full max-w-4xl gap-6 sm:grid-cols-3">
+        {modos.map((m) => (
+          <Link key={m.href} href={m.href} className="group block">
+            <Card className="h-full transition-colors group-hover:ring-foreground/25">
+              <CardHeader>
+                <div className="text-3xl">{m.emoji}</div>
+                <CardTitle className="flex items-center gap-1">
+                  {m.titulo}
+                  <span className="text-muted-foreground transition-transform group-hover:translate-x-0.5">
+                    →
+                  </span>
+                </CardTitle>
+                <CardDescription>{m.descricao}</CardDescription>
+              </CardHeader>
+            </Card>
+          </Link>
         ))}
       </section>
 
+      <section className="mt-8">
+        <Link
+          href="/desempenho"
+          className={buttonVariants({ variant: "outline" })}
+        >
+          📊 Ver desempenho
+        </Link>
+      </section>
+
       <footer className="mt-16 text-sm text-muted-foreground">
-        Em desenvolvimento · M1 — Fundação
+        Em desenvolvimento · banco com questões reais do PROSEF
       </footer>
     </main>
   );

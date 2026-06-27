@@ -15,6 +15,13 @@
       "when": 1782525018091,
       "tag": "0001_aberrant_the_stranger",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1782542828686,
+      "tag": "0002_nosy_the_twelve",
+      "breakpoints": true
     }
   ]
 }

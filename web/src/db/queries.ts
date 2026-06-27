@@ -2,7 +2,7 @@ import "server-only";
 import { and, asc, eq, sql, type SQL } from "drizzle-orm";
 
 import { db } from "./index";
-import { questoes, type Questao } from "./schema";
+import { flashcards, questoes, type Flashcard, type Questao } from "./schema";
 import { rotuloMateria, type Dificuldade, type Materia } from "@/lib/materias";
 
 export { rotuloMateria };
@@ -112,3 +112,48 @@ export async function montarSimulado(): Promise<Questao[]> {
 }
 
 export { COTAS_SIMULADO };
+
+// ---------------- Flashcards ----------------
+
+export type FiltroFlashcards = {
+  materia?: Materia;
+  assunto?: string;
+  limite?: number;
+};
+
+export async function listarFlashcards(
+  f: FiltroFlashcards = {},
+): Promise<Flashcard[]> {
+  const conds: SQL[] = [];
+  if (f.materia) conds.push(eq(flashcards.materia, f.materia));
+  if (f.assunto) conds.push(eq(flashcards.assunto, f.assunto));
+  return db
+    .select()
+    .from(flashcards)
+    .where(conds.length ? and(...conds) : undefined)
+    .orderBy(sql`random()`)
+    .limit(f.limite ?? 40);
+}
+
+export async function materiasFlashcards(): Promise<
+  { materia: Materia; rotulo: string; total: number }[]
+> {
+  const rows = await db
+    .select({ materia: flashcards.materia, total: sql<number>`count(*)::int` })
+    .from(flashcards)
+    .groupBy(flashcards.materia);
+  return rows
+    .map((r) => ({ materia: r.materia, rotulo: rotuloMateria(r.materia), total: r.total }))
+    .sort((a, b) => a.rotulo.localeCompare(b.rotulo, "pt-BR"));
+}
+
+export async function assuntosFlashcards(
+  materia?: Materia,
+): Promise<{ assunto: string; total: number }[]> {
+  return db
+    .select({ assunto: flashcards.assunto, total: sql<number>`count(*)::int` })
+    .from(flashcards)
+    .where(materia ? eq(flashcards.materia, materia) : undefined)
+    .groupBy(flashcards.assunto)
+    .orderBy(asc(flashcards.assunto));
+}

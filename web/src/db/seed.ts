@@ -14,7 +14,8 @@ import { fileURLToPath } from "node:url";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { eq } from "drizzle-orm";
-import { questoes, type NovaQuestao } from "./schema";
+import { flashcards, questoes, type NovaQuestao } from "./schema";
+import { flashcardsBase } from "../data/flashcards";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = join(__dirname, "..", "data", "questoes");
@@ -55,6 +56,14 @@ async function main() {
     totalInserted += rows.length;
     console.log(`✓ ${file}: ${rows.length} questões (fontes: ${fontes.join(", ")})`);
   }
+
+  // Flashcards (curadoria base) — idempotente pela fonte "base".
+  await db.delete(flashcards).where(eq(flashcards.fonte, "base"));
+  if (flashcardsBase.length > 0) {
+    await db.insert(flashcards).values(flashcardsBase);
+  }
+  console.log(`✓ flashcards (base): ${flashcardsBase.length}`);
+
   console.log(`\nTotal semeado: ${totalInserted} questões.`);
 }
 
