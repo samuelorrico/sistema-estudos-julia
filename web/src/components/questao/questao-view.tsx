@@ -1,7 +1,6 @@
 "use client";
 
-import { Check, X } from "lucide-react";
-
+import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/utils";
 import {
   DIFICULDADE_LABEL,
@@ -147,9 +146,9 @@ export function QuestaoView({
                   )}
                 >
                   {revelado && correta ? (
-                    <Check className="size-4" />
+                    <Icon name="check" className="text-[18px]" />
                   ) : marcadaErrada ? (
-                    <X className="size-4" />
+                    <Icon name="close" className="text-[18px]" />
                   ) : (
                     alt.id
                   )}

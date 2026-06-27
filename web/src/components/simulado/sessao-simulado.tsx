@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Flag, RotateCcw } from "lucide-react";
-
+import { Icon } from "@/components/ui/icon";
 import { QuestaoView } from "@/components/questao/questao-view";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -68,7 +67,7 @@ export function SessaoSimulado({ questoes }: { questoes: Questao[] }) {
               href="/simulado"
               className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground hover:bg-primary/80"
             >
-              <RotateCcw className="size-4" /> Novo simulado
+              <Icon name="refresh" className="text-[18px]" /> Novo simulado
             </a>
             <Link
               href="/"
@@ -170,16 +169,16 @@ export function SessaoSimulado({ questoes }: { questoes: Questao[] }) {
           disabled={idx === 0}
           onClick={() => setIdx((i) => Math.max(0, i - 1))}
         >
-          <ChevronLeft /> Anterior
+          <Icon name="chevron_left" /> Anterior
         </Button>
 
         {idx < total - 1 ? (
           <Button onClick={() => setIdx((i) => Math.min(total - 1, i + 1))}>
-            Próxima <ChevronRight />
+            Próxima <Icon name="chevron_right" />
           </Button>
         ) : (
           <Button onClick={finalizar}>
-            <Flag /> Finalizar prova
+            <Icon name="flag" /> Finalizar prova
           </Button>
         )}
       </div>

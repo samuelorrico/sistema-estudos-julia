@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Check, Loader2, Save, Sparkles } from "lucide-react";
-
+import { Icon } from "@/components/ui/icon";
 import { gerarAction, salvarAction } from "@/app/tutor/actions";
 import { QuestaoView } from "@/components/questao/questao-view";
 import { Button } from "@/components/ui/button";
@@ -133,7 +132,11 @@ export function TutorGerador() {
         />
 
         <Button onClick={gerar} disabled={pendente} size="lg" className="self-start">
-          {pendente ? <Loader2 className="animate-spin" /> : <Sparkles />}
+          {pendente ? (
+            <Icon name="progress_activity" className="animate-spin" />
+          ) : (
+            <Icon name="auto_awesome" />
+          )}
           {pendente ? "Gerando..." : "Gerar questões"}
         </Button>
         <p className="text-xs text-muted-foreground">
@@ -150,7 +153,7 @@ export function TutorGerador() {
 
       {salvas != null && (
         <div className="flex items-center gap-2 rounded-lg border border-green-600/40 bg-green-50 px-4 py-3 text-sm text-green-800 dark:bg-green-950/30 dark:text-green-200">
-          <Check className="size-4" /> {salvas}{" "}
+          <Icon name="check" className="text-[18px]" /> {salvas}{" "}
           {salvas === 1 ? "questão salva" : "questões salvas"} no banco — já
           aparecem no Treino e no Simulado.
         </div>
@@ -163,7 +166,11 @@ export function TutorGerador() {
               Prévia ({geradas.length})
             </h2>
             <Button onClick={salvar} disabled={salvando}>
-              {salvando ? <Loader2 className="animate-spin" /> : <Save />}
+              {salvando ? (
+                <Icon name="progress_activity" className="animate-spin" />
+              ) : (
+                <Icon name="save" />
+              )}
               Salvar no banco
             </Button>
           </div>

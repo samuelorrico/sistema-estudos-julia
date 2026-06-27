@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronRight, RotateCcw } from "lucide-react";
-
+import { Icon } from "@/components/ui/icon";
 import { QuestaoView } from "@/components/questao/questao-view";
 import { Button } from "@/components/ui/button";
 import type { Questao } from "@/db/schema";
@@ -54,7 +53,7 @@ export function SessaoTreino({ questoes }: { questoes: Questao[] }) {
           Você acertou {pct}% das questões deste treino.
         </p>
         <Button onClick={refazer} variant="outline">
-          <RotateCcw /> Refazer treino
+          <Icon name="refresh" /> Refazer treino
         </Button>
       </div>
     );
@@ -93,7 +92,7 @@ export function SessaoTreino({ questoes }: { questoes: Questao[] }) {
         <div className="flex justify-end">
           <Button onClick={avancar} size="lg">
             {idx < total - 1 ? "Próxima questão" : "Ver resultado"}
-            <ChevronRight />
+            <Icon name="chevron_right" />
           </Button>
         </div>
       )}

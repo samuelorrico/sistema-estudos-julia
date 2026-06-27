@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Eye, RotateCcw, X } from "lucide-react";
-
+import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { rotuloMateria } from "@/lib/materias";
@@ -44,7 +43,7 @@ export function SessaoFlashcards({
           Você revisou todos os {total} conceitos!
         </p>
         <Button onClick={reiniciar} variant="outline">
-          <RotateCcw /> Revisar de novo
+          <Icon name="refresh" /> Revisar de novo
         </Button>
       </div>
     );
@@ -108,20 +107,20 @@ export function SessaoFlashcards({
       {virado ? (
         <div className="flex items-center justify-center gap-2">
           <Button variant="destructive" size="lg" onClick={naoSabia}>
-            <X /> Não sabia
+            <Icon name="close" /> Não sabia
           </Button>
           <Button
             size="lg"
             onClick={sabia}
             className="bg-green-600 text-white hover:bg-green-600/85"
           >
-            <Check /> Sabia
+            <Icon name="check" /> Sabia
           </Button>
         </div>
       ) : (
         <div className="flex justify-center">
           <Button size="lg" variant="outline" onClick={() => setVirado(true)}>
-            <Eye /> Mostrar resposta
+            <Icon name="visibility" /> Mostrar resposta
           </Button>
         </div>
       )}

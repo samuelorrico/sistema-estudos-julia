@@ -1,8 +1,8 @@
 "use client";
 
 import { useActionState } from "react";
-import { Heart, Loader2 } from "lucide-react";
 
+import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { entrar, type LoginState } from "./actions";
 
@@ -17,8 +17,8 @@ export default function LoginPage() {
   return (
     <main className="flex flex-1 flex-col items-center justify-center px-6 py-16">
       <div className="flex w-full max-w-sm flex-col items-center gap-6 rounded-2xl border bg-card p-8 text-center ring-1 ring-foreground/10">
-        <div className="flex size-14 items-center justify-center rounded-full bg-secondary text-3xl">
-          <Heart className="size-7 fill-current text-rose-500" />
+        <div className="flex size-14 items-center justify-center rounded-full bg-secondary">
+          <Icon name="favorite" filled className="text-[32px] text-rose-500" />
         </div>
         <div className="flex flex-col gap-1">
           <h1 className="text-xl font-bold tracking-tight">
@@ -40,7 +40,9 @@ export default function LoginPage() {
             className="h-10 rounded-lg border border-border bg-background px-3 text-center text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20"
           />
           <Button type="submit" size="lg" disabled={pendente}>
-            {pendente ? <Loader2 className="animate-spin" /> : null}
+            {pendente ? (
+              <Icon name="progress_activity" className="animate-spin" />
+            ) : null}
             Entrar
           </Button>
           {state.erro && (
