@@ -164,6 +164,13 @@ export async function listarFlashcards(
     .limit(f.limite ?? 40);
 }
 
+export async function contarFlashcards(): Promise<number> {
+  const [row] = await db
+    .select({ total: sql<number>`count(*)::int` })
+    .from(flashcards);
+  return row?.total ?? 0;
+}
+
 export async function materiasFlashcards(): Promise<
   { materia: Materia; rotulo: string; total: number }[]
 > {

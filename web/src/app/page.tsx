@@ -3,6 +3,13 @@ import type { Route } from "next";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  contarFlashcards,
+  contarQuestoes,
+  fontesComContagem,
+} from "@/db/queries";
+
+export const dynamic = "force-dynamic";
 
 const modos: {
   href: Route;
@@ -22,7 +29,7 @@ const modos: {
     emoji: "📝",
     titulo: "Simulado",
     descricao:
-      "A prova inteira: 30 questões na distribuição oficial. Gabarito e revisão só no final.",
+      "Escolha uma prova real inteira (ou sorteada) na distribuição oficial. Gabarito e revisão só no final.",
   },
   {
     href: "/flashcards",
@@ -33,7 +40,20 @@ const modos: {
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const [totalQuestoes, fontes, totalFlashcards] = await Promise.all([
+    contarQuestoes(),
+    fontesComContagem(),
+    contarFlashcards(),
+  ]);
+  const totalProvas = fontes.filter((f) => f.fonte !== "IA").length;
+
+  const stats = [
+    { valor: totalQuestoes, rotulo: "questões reais" },
+    { valor: totalProvas, rotulo: totalProvas === 1 ? "prova" : "provas" },
+    { valor: totalFlashcards, rotulo: "flashcards" },
+  ];
+
   return (
     <main className="flex flex-1 flex-col items-center px-6 py-16">
       <section className="flex w-full max-w-3xl flex-col items-center gap-6 text-center">
@@ -50,9 +70,21 @@ export default function Home() {
         <Link href="/treino" className={buttonVariants({ size: "lg" })}>
           Começar a estudar
         </Link>
+
+        <dl className="mt-2 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+          {stats.map((s) => (
+            <div key={s.rotulo} className="flex flex-col items-center">
+              <dt className="sr-only">{s.rotulo}</dt>
+              <dd className="text-2xl font-bold tracking-tight tabular-nums">
+                {s.valor}
+              </dd>
+              <span className="text-xs text-muted-foreground">{s.rotulo}</span>
+            </div>
+          ))}
+        </dl>
       </section>
 
-      <section className="mt-14 grid w-full max-w-4xl gap-6 sm:grid-cols-3">
+      <section className="mt-12 grid w-full max-w-4xl gap-6 sm:grid-cols-3">
         {modos.map((m) => (
           <Link key={m.href} href={m.href} className="group block">
             <Card className="h-full transition-colors group-hover:ring-foreground/25">
@@ -72,10 +104,7 @@ export default function Home() {
       </section>
 
       <section className="mt-8 flex flex-wrap justify-center gap-3">
-        <Link
-          href="/tutor"
-          className={buttonVariants({ variant: "outline" })}
-        >
+        <Link href="/tutor" className={buttonVariants({ variant: "outline" })}>
           🤖 Tutor de IA
         </Link>
         <Link

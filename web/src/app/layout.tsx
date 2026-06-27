@@ -45,7 +45,7 @@ export default function RootLayout({
         />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=auto_awesome,check,chevron_left,chevron_right,close,dark_mode,favorite,flag,light_mode,progress_activity,refresh,save,visibility&display=block"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=auto_awesome,check,chevron_left,chevron_right,close,dark_mode,favorite,flag,light_mode,progress_activity,refresh,save,shuffle,visibility&display=block"
         />
         <ThemeProvider>
           <ThemeToggle />
