@@ -28,6 +28,12 @@
 - Listagem com filtros combináveis
 - Modo de treino (responder, ver gabarito e explicação)
 
+**Modos de estudo (3)** - PLANNED  *(spec: features/modos-estudo/spec.md)*
+
+- Simulado (prova inteira) → revisão colorida ao fim (verde acerto / vermelho erro)
+- Treino (filtrado) → feedback imediato com animação
+- Flashcards (conceitos) → resposta na hora
+
 ---
 
 ## M2 — Acompanhamento + Plano de Estudo
@@ -67,7 +73,8 @@
 - Chat com streaming (Vercel AI SDK + Claude); ferramentas: pontos fracos, buscar questões
 
 **Explicação de erros** - PLANNED
-**Correção de redação (5 competências, 0–10)** - PLANNED
+**Geração de flashcards/conceitos** - PLANNED
+*(Correção de redação: fora do escopo — a Juju faz a redação por conta dela — AD-007)*
 
 ---
 

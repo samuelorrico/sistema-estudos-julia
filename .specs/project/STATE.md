@@ -47,6 +47,12 @@
 **Reason:** Pedido explícito do usuário; garante treino infinito no estilo certo.
 **Impact:** Definido em `features/tutor-ia/padrao-strix.md` (padrão + prompt + few-shot reais) e `features/tutor-ia/spec.md` (TUTOR-01..04). Requer adicionar coluna `textoApoio` ao schema.
 
+### AD-007: 3 modos de estudo; redação por conta da Juju (2026-06-26)
+
+**Decision:** O app terá 3 modos — **Simulado** (prova inteira; gabarito + revisão colorida ao fim), **Treino** (questões filtradas por matéria/assunto; feedback imediato com animação) e **Flashcards** (conceitos; resposta na hora). A **correção de redação fica fora do escopo** — a Juju faz a redação por conta dela.
+**Reason:** Pedido explícito do usuário.
+**Impact:** Nova feature `features/modos-estudo/spec.md` (MODO-01..06). A correção de redação do tutor vira **geração de flashcards**. Implica tabela `flashcards` e montagem do simulado na distribuição 8/4/3/3/3/5/2/2; feedback com animação verde/vermelho (respeitando `reduce-motion`).
+
 ---
 
 ## Active Blockers
@@ -100,6 +106,8 @@ _(nenhum ativo)_
 - [ ] Adicionar coluna `textoApoio` à tabela `questoes` (estímulo separado do enunciado) — ver AD-006
 - [ ] Extrair e semear o banco com as provas reais (começar pela Bahiana Área de Saúde 2025.1) — Quick Task futura
 - [ ] Wiring do agente de IA (Vercel AI SDK + Claude) usando o prompt de `padrao-strix.md` — precisa `ANTHROPIC_API_KEY` em `web/.env.local`
+- [ ] Criar tabela `flashcards` (frente/verso/materia/assunto) para o Modo Flashcards
+- [ ] Escolher lib de animação (Framer Motion vs CSS) para o feedback acerto/erro
 - [ ] Definir local/nome final do app no scaffold quando partirmos para mais código
 
 ---

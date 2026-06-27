@@ -10,7 +10,7 @@ de IA integrado resolve isso sob demanda, sem depender de professor humano.
 
 - [ ] Gerar questões inéditas no **padrão Strix** (ver `padrao-strix.md`), gerais ou por matéria/assunto.
 - [ ] Explicar por que ela errou uma questão, em linguagem didática.
-- [ ] Corrigir uma redação dissertativo-argumentativa pelas 5 competências (0–10).
+- [ ] Gerar **flashcards/conceitos** (frente/verso) por matéria/assunto para o Modo Flashcards.
 
 ## Out of Scope
 
@@ -19,6 +19,7 @@ de IA integrado resolve isso sob demanda, sem depender de professor humano.
 | Voz / áudio | Texto basta no v1 |
 | Geração de imagens nas questões | Estímulo só em texto/descrição no v1 |
 | Multiusuário | 1 usuária (sem login — AD-005) |
+| Correção de redação | A Juju faz a redação por conta dela (AD-007) |
 
 ---
 
@@ -56,15 +57,15 @@ mais questões (gerais ou de uma matéria/assunto), para nunca ficar sem treino.
 
 ---
 
-### P3: Corrigir redação
+### P3: Gerar flashcards/conceitos
 
-**User Story**: Como a Juju, quero colar minha redação e receber nota por competência + comentários,
-para melhorar a parte que mais pesa (40%).
+**User Story**: Como a Juju, quero pedir ao tutor cartões de conceito (frente/verso) de uma
+matéria/assunto, para usar no Modo Flashcards.
 
 **Acceptance Criteria**:
 
-1. WHEN a usuária envia um texto dissertativo-argumentativo THEN o sistema SHALL pontuar as 5
-   competências (0–2 cada, total 0–10) e apontar pontos a melhorar.
+1. WHEN a usuária pede flashcards de um assunto THEN o sistema SHALL gerar pares
+   conceito→resposta concisos e corretos, salváveis na tabela de flashcards.
 
 ---
 
@@ -86,7 +87,7 @@ para melhorar a parte que mais pesa (40%).
 | TUTOR-03 | P1: marcar fonte=IA + salvar no banco | Design | Pending |
 | TUTOR-04 | P1: validação do formato (Zod) | Design | Pending |
 | TUTOR-05 | P2: explicar erros | - | Pending |
-| TUTOR-06 | P3: corrigir redação (5 competências) | - | Pending |
+| TUTOR-06 | P3: gerar flashcards/conceitos | - | Pending |
 
 **ID format:** `TUTOR-[NUMBER]`
 
