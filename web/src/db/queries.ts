@@ -102,7 +102,13 @@ export async function montarSimulado(): Promise<Questao[]> {
         .limit(n),
     ),
   );
-  return blocos.flat();
+  // Embaralha entre matérias para a ordem parecer com a da prova real.
+  const todas = blocos.flat();
+  for (let i = todas.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [todas[i], todas[j]] = [todas[j], todas[i]];
+  }
+  return todas;
 }
 
 export { COTAS_SIMULADO };
