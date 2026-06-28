@@ -100,6 +100,9 @@ _(nenhum ativo)_
 | 013 | Painel de desempenho (M2): migração 0003 `tentativas`; registro Treino/Simulado; `/desempenho` (resumo + por matéria + assuntos a reforçar) + botão de zerar | 2026-06-28 | — | ✅ Done |
 | 014 | IA sob demanda: explicação ao errar (botão Gemini) + tutor "a partir de uma questão" + questões geradas respondíveis | 2026-06-28 | 39c0a69 | ✅ Done |
 | 015 | README completo (com todas as dependências) + versão DEMO (`demo-questoes.ts`, `db:seed:demo`, `.env.example`) para showcase no GitHub sem provas reais nem interferir no banco da Julia | 2026-06-28 | — | ✅ Done |
+| 016 | Corrigir 2 figuras vetoriais (UNIT Q33 cladograma / ZARNS Q33 digestão) via render de clip; enunciado da ZARNS Q33 transcrito | 2026-06-28 | 48f4b2a | ✅ Done |
+| 017 | Simulado cronometrado (contagem regressiva + autoenvio ao zerar) | 2026-06-28 | cceb8ed | ✅ Done |
+| 018 | Revisão mobile: imagens não estouram (`max-w-full`); barra do cronômetro quebra linha em telas estreitas | 2026-06-28 | — | ✅ Done |
 
 ---
 

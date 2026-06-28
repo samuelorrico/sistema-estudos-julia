@@ -194,7 +194,7 @@ export function SessaoSimulado({
   // ----- Durante o simulado -----
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-2 text-sm">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-sm">
         <span className="font-medium">
           Questão {idx + 1} de {total}
         </span>

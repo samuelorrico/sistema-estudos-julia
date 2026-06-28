@@ -123,7 +123,7 @@ export function QuestaoView({
               key={img.src}
               src={srcFigura(img.src)}
               alt={img.alt}
-              className="max-h-[420px] w-auto self-center rounded-lg border bg-white object-contain"
+              className="max-h-[420px] w-auto max-w-full self-center rounded-lg border bg-white object-contain"
             />
           ))}
         </div>
