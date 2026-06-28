@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-06-27
-**Current Work:** App pronto e em deploy. Banco: **230 questões** + 31 flashcards (Neon) — inclui as **4 PROSEF EBMSP Área de Saúde reais** (2020.1, 2021.1, 2021.2, 2025.1 — 30 q cada, formato IDÊNTICO ao de Psicologia) + Bahiana/UNIT/ZARNS Medicina 2025.1 (referência de estilo). As 4 área-de-saúde foram extraídas com parser POR POSIÇÃO (`provas-fonte/extracao/parse_pos.py` + `run_provas.py`) porque o nº da questão é imagem (badge) e o layout de 2 colunas embaralha enunciado/alternativas; reconstrói numeração pela posição dos badges (ordem coluna→y), captura estímulos compartilhados ("Questões N e M" / "Questões de N a M") como `textoApoio` e mapeia figuras por posição. 202 figuras no Vercel Blob. 3 modos + **gate de senha** (`APP_PASSCODE`) + **tutor de IA via Gemini grátis** (auto-detecta `GOOGLE_GEMINI_API_KEY`/`GOOGLE_GENERATIVE_AI_API_KEY`, senão Claude — testado OK) + **figuras no Vercel Blob** (`npm run blob:upload` → `NEXT_PUBLIC_BLOB_BASE`). Falta só o usuário setar as env vars na Vercel + redeploy. Próximo: painel de desempenho (M2). **NÃO gerar questões com IA no banco** (pedido do usuário) — só provas reais; o /tutor on-demand permanece.
+**Current Work:** App pronto e em deploy. Banco: **230 questões** + **64 flashcards** (Neon) — inclui as **4 PROSEF EBMSP Área de Saúde reais** (2020.1, 2021.1, 2021.2, 2025.1 — 30 q cada, formato IDÊNTICO ao de Psicologia) + Bahiana/UNIT/ZARNS Medicina 2025.1 (referência de estilo). As 4 área-de-saúde foram extraídas com parser POR POSIÇÃO (`provas-fonte/extracao/parse_pos.py` + `run_provas.py`) porque o nº da questão é imagem (badge) e o layout de 2 colunas embaralha enunciado/alternativas; reconstrói numeração pela posição dos badges (ordem coluna→y), captura estímulos compartilhados ("Questões N e M" / "Questões de N a M") como `textoApoio` e mapeia figuras por posição. 202 figuras no Vercel Blob. 3 modos + **gate de senha** (`APP_PASSCODE`) + **tutor de IA via Gemini grátis** (auto-detecta `GOOGLE_GEMINI_API_KEY`/`GOOGLE_GENERATIVE_AI_API_KEY`, senão Claude — testado OK) + **figuras no Vercel Blob** (`npm run blob:upload` → `NEXT_PUBLIC_BLOB_BASE`). Falta só o usuário setar as env vars na Vercel + redeploy. Próximo: painel de desempenho (M2). **NÃO gerar questões com IA no banco** (pedido do usuário) — só provas reais; o /tutor on-demand permanece.
 
 **Stack notável:** Next.js **16** + React **19**; shadcn sobre **Base UI** (`Button` sem `asChild` — usar `buttonVariants` no `Link` ou prop `render`). Rotas tipadas ativas (links só para rotas existentes).
 
@@ -96,6 +96,7 @@ _(nenhum ativo)_
 | 009 | Parser POR POSIÇÃO + extração das 3 provas área-de-saúde restantes (2020.1/2021.1/2021.2 = 90 q); banco → 230 q; 202 figuras no Blob | 2026-06-27 | — | ✅ Done |
 | 010 | Simulado: escolha de prova (real ou sorteado) + corte proporcional; Treino: filtro por prova; home com contadores ao vivo | 2026-06-27 | ddaf38d | ✅ Done |
 | 011 | Revisão de qualidade do banco: limpeza de créditos bibliográficos vazados no início de 16 enunciados (atribuição de figura) — `limpar_credito` no parser; re-seed | 2026-06-27 | — | ✅ Done |
+| 012 | Ampliar flashcards 31 → 64 (curadoria alinhada às provas EBMSP, peso em Português/Biologia) | 2026-06-28 | 18d58d7 | ✅ Done |
 
 ---
 
