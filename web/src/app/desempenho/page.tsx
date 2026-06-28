@@ -147,12 +147,13 @@ export default async function DesempenhoPage() {
               </p>
             </section>
           )}
-
-          <div className="mt-2 flex justify-end">
-            <BotaoZerar />
-          </div>
         </>
       )}
+
+      {/* Reset sempre disponível (desabilitado quando não há o que apagar). */}
+      <div className="mt-2 flex justify-end">
+        <BotaoZerar desabilitado={resumo.total === 0} />
+      </div>
     </main>
   );
 }

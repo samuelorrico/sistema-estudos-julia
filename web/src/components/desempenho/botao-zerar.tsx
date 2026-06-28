@@ -7,7 +7,7 @@ import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { zerarHistorico } from "@/actions/tentativas";
 
-export function BotaoZerar() {
+export function BotaoZerar({ desabilitado = false }: { desabilitado?: boolean }) {
   const router = useRouter();
   const [pendente, startTransition] = useTransition();
   const [confirmando, setConfirmando] = useState(false);
@@ -22,7 +22,11 @@ export function BotaoZerar() {
 
   if (!confirmando) {
     return (
-      <Button variant="outline" onClick={() => setConfirmando(true)}>
+      <Button
+        variant="outline"
+        onClick={() => setConfirmando(true)}
+        disabled={desabilitado}
+      >
         <Icon name="refresh" /> Zerar histórico
       </Button>
     );
