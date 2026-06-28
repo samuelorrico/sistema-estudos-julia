@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/ui/icon";
 import { QuestaoView } from "@/components/questao/questao-view";
@@ -9,15 +9,28 @@ import { registrarTentativas } from "@/actions/tentativas";
 import { cn } from "@/lib/utils";
 import type { Questao } from "@/db/schema";
 
+function formatarTempo(seg: number): string {
+  const s = Math.max(0, seg);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const ss = s % 60;
+  const mm = String(m).padStart(2, "0");
+  const sss = String(ss).padStart(2, "0");
+  return h > 0 ? `${h}:${mm}:${sss}` : `${mm}:${sss}`;
+}
+
 export function SessaoSimulado({
   questoes,
   // < 6/30 elimina no edital PROSEL 2026.2 (20%); escala para provas de outro tamanho.
   corte = Math.max(1, Math.round(questoes.length / 5)),
   iaDisponivel = false,
+  // Tempo total: ~3 min por questão (30 questões → 90 min), no espírito da prova.
+  duracaoMin = Math.round(questoes.length * 3),
 }: {
   questoes: Questao[];
   corte?: number;
   iaDisponivel?: boolean;
+  duracaoMin?: number;
 }) {
   const total = questoes.length;
   const CORTE_ELIMINATORIO = corte;
@@ -33,16 +46,8 @@ export function SessaoSimulado({
     setRespostas((r) => ({ ...r, [atual.id]: id }));
   }
 
-  function finalizar() {
-    const brancos = total - respondidas;
-    if (
-      brancos > 0 &&
-      !window.confirm(
-        `Você deixou ${brancos} ${brancos === 1 ? "questão em branco" : "questões em branco"}. Finalizar mesmo assim?`,
-      )
-    ) {
-      return;
-    }
+  // Envia a prova (sem confirmação) — usado pelo botão e pelo fim do tempo.
+  function enviar() {
     setFinalizado(true);
     window.scrollTo({ top: 0 });
     // Registra todas as questões da prova (em branco conta como erro, como na prova real).
@@ -62,6 +67,45 @@ export function SessaoSimulado({
       }),
     ).catch(() => {});
   }
+
+  function finalizar() {
+    const brancos = total - respondidas;
+    if (
+      brancos > 0 &&
+      !window.confirm(
+        `Você deixou ${brancos} ${brancos === 1 ? "questão em branco" : "questões em branco"}. Finalizar mesmo assim?`,
+      )
+    ) {
+      return;
+    }
+    enviar();
+  }
+
+  // ----- Cronômetro -----
+  const [restanteSeg, setRestanteSeg] = useState(duracaoMin * 60);
+  const [fimEm] = useState(() => Date.now() + duracaoMin * 60 * 1000);
+  // Ref para o `enviar` mais recente (evita closure obsoleta no setInterval).
+  const enviarRef = useRef(enviar);
+  useEffect(() => {
+    enviarRef.current = enviar;
+  });
+
+  useEffect(() => {
+    if (finalizado) return;
+    const t = setInterval(() => {
+      const r = Math.round((fimEm - Date.now()) / 1000);
+      if (r <= 0) {
+        setRestanteSeg(0);
+        clearInterval(t);
+        enviarRef.current(); // autoenvia ao zerar
+      } else {
+        setRestanteSeg(r);
+      }
+    }, 1000);
+    return () => clearInterval(t);
+  }, [finalizado, fimEm]);
+
+  const tempoAcabando = restanteSeg <= 300; // últimos 5 min
 
   // ----- Revisão final -----
   if (finalizado) {
@@ -150,13 +194,27 @@ export function SessaoSimulado({
   // ----- Durante o simulado -----
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between text-sm">
+      <div className="flex items-center justify-between gap-2 text-sm">
         <span className="font-medium">
           Questão {idx + 1} de {total}
         </span>
-        <span className="text-muted-foreground">
-          {respondidas}/{total} respondidas
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="text-muted-foreground">
+            {respondidas}/{total} respondidas
+          </span>
+          <span
+            aria-label="Tempo restante"
+            className={cn(
+              "inline-flex items-center gap-1 rounded-full px-2.5 py-1 font-semibold tabular-nums",
+              tempoAcabando
+                ? "animate-pulse bg-red-100 text-red-700 dark:bg-red-950/50 dark:text-red-200"
+                : "bg-secondary text-secondary-foreground",
+            )}
+          >
+            <Icon name="schedule" className="text-[18px]" />
+            {formatarTempo(restanteSeg)}
+          </span>
+        </div>
       </div>
 
       {/* Navegador de questões */}

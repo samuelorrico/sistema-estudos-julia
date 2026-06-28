@@ -109,7 +109,8 @@ export default async function SimuladoPage({
         </Link>
         <h1 className="mt-1 text-2xl font-bold tracking-tight">{titulo}</h1>
         <p className="text-sm text-muted-foreground">
-          {descricao} Sem feedback durante — gabarito e revisão só no final.
+          {descricao} Cronometrado: {questoes.length * 3} min (autoenvia ao
+          zerar). Sem feedback durante — gabarito e revisão só no final.
         </p>
       </header>
 
