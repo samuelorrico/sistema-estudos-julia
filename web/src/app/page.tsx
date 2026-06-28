@@ -116,7 +116,8 @@ export default async function Home() {
       </section>
 
       <footer className="mt-16 text-sm text-muted-foreground">
-        Em desenvolvimento · banco com questões reais do PROSEF
+        feito por Samuel, com muito amor para a próxima estudante de psicologia
+        na Bahiana 💗
       </footer>
     </main>
   );
