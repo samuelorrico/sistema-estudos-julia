@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Icon } from "@/components/ui/icon";
 import { QuestaoView } from "@/components/questao/questao-view";
 import { Button } from "@/components/ui/button";
+import { registrarTentativas } from "@/actions/tentativas";
 import { cn } from "@/lib/utils";
 import type { Questao } from "@/db/schema";
 
@@ -42,6 +43,22 @@ export function SessaoSimulado({
     }
     setFinalizado(true);
     window.scrollTo({ top: 0 });
+    // Registra todas as questões da prova (em branco conta como erro, como na prova real).
+    void registrarTentativas(
+      questoes.map((q) => {
+        const sel = respostas[q.id] ?? null;
+        return {
+          questaoId: q.id,
+          materia: q.materia,
+          assunto: q.assunto,
+          dificuldade: q.dificuldade,
+          fonte: q.fonte,
+          acertou: sel === q.gabarito,
+          selecionada: sel,
+          modo: "simulado" as const,
+        };
+      }),
+    ).catch(() => {});
   }
 
   // ----- Revisão final -----

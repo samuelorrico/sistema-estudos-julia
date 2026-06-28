@@ -2,7 +2,13 @@ import "server-only";
 import { and, asc, eq, sql, type SQL } from "drizzle-orm";
 
 import { db } from "./index";
-import { flashcards, questoes, type Flashcard, type Questao } from "./schema";
+import {
+  flashcards,
+  questoes,
+  tentativas,
+  type Flashcard,
+  type Questao,
+} from "./schema";
 import { rotuloMateria, type Dificuldade, type Materia } from "@/lib/materias";
 
 export { rotuloMateria };
@@ -192,4 +198,70 @@ export async function assuntosFlashcards(
     .where(materia ? eq(flashcards.materia, materia) : undefined)
     .groupBy(flashcards.assunto)
     .orderBy(asc(flashcards.assunto));
+}
+
+// ---------------- Desempenho (tentativas) ----------------
+
+export type ResumoDesempenho = {
+  total: number;
+  acertos: number;
+  dias: number;
+};
+
+/** Números gerais: total respondido, acertos e dias distintos de estudo. */
+export async function resumoDesempenho(): Promise<ResumoDesempenho> {
+  const [row] = await db
+    .select({
+      total: sql<number>`count(*)::int`,
+      acertos: sql<number>`count(*) filter (where ${tentativas.acertou})::int`,
+      dias: sql<number>`count(distinct date(${tentativas.criadoEm}))::int`,
+    })
+    .from(tentativas);
+  return {
+    total: row?.total ?? 0,
+    acertos: row?.acertos ?? 0,
+    dias: row?.dias ?? 0,
+  };
+}
+
+/** Acertos por matéria (todas as matérias com tentativa registrada). */
+export async function desempenhoPorMateria(): Promise<
+  { materia: Materia; rotulo: string; total: number; acertos: number }[]
+> {
+  const rows = await db
+    .select({
+      materia: tentativas.materia,
+      total: sql<number>`count(*)::int`,
+      acertos: sql<number>`count(*) filter (where ${tentativas.acertou})::int`,
+    })
+    .from(tentativas)
+    .groupBy(tentativas.materia);
+  return rows
+    .map((r) => ({ ...r, rotulo: rotuloMateria(r.materia) }))
+    .sort((a, b) => a.rotulo.localeCompare(b.rotulo, "pt-BR"));
+}
+
+/** Assuntos com pior aproveitamento (mín. de tentativas), para focar o estudo. */
+export async function pontosFracos(
+  minTentativas = 3,
+  limite = 6,
+): Promise<
+  { materia: Materia; rotulo: string; assunto: string; total: number; acertos: number }[]
+> {
+  const rows = await db
+    .select({
+      materia: tentativas.materia,
+      assunto: tentativas.assunto,
+      total: sql<number>`count(*)::int`,
+      acertos: sql<number>`count(*) filter (where ${tentativas.acertou})::int`,
+    })
+    .from(tentativas)
+    .groupBy(tentativas.materia, tentativas.assunto)
+    .having(sql`count(*) >= ${minTentativas}`)
+    .orderBy(
+      sql`(count(*) filter (where ${tentativas.acertou}))::float / count(*) asc`,
+      sql`count(*) desc`,
+    )
+    .limit(limite);
+  return rows.map((r) => ({ ...r, rotulo: rotuloMateria(r.materia) }));
 }

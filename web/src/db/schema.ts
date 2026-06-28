@@ -1,4 +1,5 @@
 import {
+  boolean,
   integer,
   jsonb,
   pgEnum,
@@ -71,3 +72,26 @@ export const flashcards = pgTable("flashcards", {
 
 export type Flashcard = typeof flashcards.$inferSelect;
 export type NovoFlashcard = typeof flashcards.$inferInsert;
+
+// Tentativas: cada resposta dada (Treino/Simulado) — base do painel de desempenho.
+// Campos de matéria/assunto/dificuldade/fonte são desnormalizados para que as
+// estatísticas sobrevivam a um re-seed (que recria os ids das questões).
+export const modoEstudoEnum = pgEnum("modo_estudo", ["treino", "simulado"]);
+
+export const tentativas = pgTable("tentativas", {
+  id: serial("id").primaryKey(),
+  // Referência frouxa à questão (sem FK: o re-seed recria os ids).
+  questaoId: integer("questao_id"),
+  materia: materiaEnum("materia").notNull(),
+  assunto: text("assunto").notNull(),
+  dificuldade: dificuldadeEnum("dificuldade").notNull().default("media"),
+  fonte: text("fonte").notNull().default("PROSEF"),
+  acertou: boolean("acertou").notNull(),
+  // Alternativa marcada (null = deixada em branco, possível no simulado).
+  selecionada: text("selecionada"),
+  modo: modoEstudoEnum("modo").notNull(),
+  criadoEm: timestamp("criado_em").defaultNow().notNull(),
+});
+
+export type Tentativa = typeof tentativas.$inferSelect;
+export type NovaTentativa = typeof tentativas.$inferInsert;

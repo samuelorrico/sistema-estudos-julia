@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Icon } from "@/components/ui/icon";
 import { QuestaoView } from "@/components/questao/questao-view";
 import { Button } from "@/components/ui/button";
+import { registrarTentativa } from "@/actions/tentativas";
 import type { Questao } from "@/db/schema";
 
 export function SessaoTreino({ questoes }: { questoes: Questao[] }) {
@@ -20,7 +21,19 @@ export function SessaoTreino({ questoes }: { questoes: Questao[] }) {
     if (revelado) return;
     setSelecionada(id);
     setRevelado(true);
-    if (id === atual.gabarito) setAcertos((a) => a + 1);
+    const acertou = id === atual.gabarito;
+    if (acertou) setAcertos((a) => a + 1);
+    // Registra a tentativa (sem bloquear a UI).
+    void registrarTentativa({
+      questaoId: atual.id,
+      materia: atual.materia,
+      assunto: atual.assunto,
+      dificuldade: atual.dificuldade,
+      fonte: atual.fonte,
+      acertou,
+      selecionada: id,
+      modo: "treino",
+    }).catch(() => {});
   }
 
   function avancar() {
