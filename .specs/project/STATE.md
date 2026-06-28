@@ -94,6 +94,8 @@ _(nenhum ativo)_
 | 007 | Camada de dados + 3 modos (Treino/Simulado/Flashcards) + tabela `flashcards` (31 conceitos) + landing-hub | 2026-06-27 | 4ed9c6e/180336f | ✅ Done |
 | 008 | Agente de IA: gera questões padrão Strix (Vercel AI SDK + Claude opus-4-8 + Zod); /tutor com prévia e salvar (fonte=IA) | 2026-06-27 | 003017f | ✅ Done |
 | 009 | Parser POR POSIÇÃO + extração das 3 provas área-de-saúde restantes (2020.1/2021.1/2021.2 = 90 q); banco → 230 q; 202 figuras no Blob | 2026-06-27 | — | ✅ Done |
+| 010 | Simulado: escolha de prova (real ou sorteado) + corte proporcional; Treino: filtro por prova; home com contadores ao vivo | 2026-06-27 | ddaf38d | ✅ Done |
+| 011 | Revisão de qualidade do banco: limpeza de créditos bibliográficos vazados no início de 16 enunciados (atribuição de figura) — `limpar_credito` no parser; re-seed | 2026-06-27 | — | ✅ Done |
 
 ---
 
