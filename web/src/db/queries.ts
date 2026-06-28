@@ -114,6 +114,31 @@ export async function questoesPorFonte(fonte: string): Promise<Questao[]> {
     .orderBy(asc(questoes.numero), asc(questoes.id));
 }
 
+/** Lista leve de questões para o seletor "gerar a partir de uma questão". */
+export async function questoesParaPicker(): Promise<
+  {
+    id: number;
+    fonte: string;
+    numero: number | null;
+    materia: Materia;
+    assunto: string;
+    resumo: string;
+  }[]
+> {
+  const rows = await db
+    .select({
+      id: questoes.id,
+      fonte: questoes.fonte,
+      numero: questoes.numero,
+      materia: questoes.materia,
+      assunto: questoes.assunto,
+      resumo: sql<string>`left(${questoes.enunciado}, 70)`,
+    })
+    .from(questoes)
+    .orderBy(asc(questoes.fonte), asc(questoes.numero), asc(questoes.id));
+  return rows;
+}
+
 /** Uma questão por id (revisão/feedback). */
 export async function questaoPorId(id: number): Promise<Questao | undefined> {
   const [row] = await db.select().from(questoes).where(eq(questoes.id, id)).limit(1);

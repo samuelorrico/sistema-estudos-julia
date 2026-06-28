@@ -1,4 +1,4 @@
-import { generateObject, type LanguageModel } from "ai";
+import { generateObject, generateText, type LanguageModel } from "ai";
 import { z } from "zod";
 
 import {
@@ -94,6 +94,65 @@ export async function gerarQuestoesCom(
     system: SISTEMA_STRIX,
     prompt: instrucao(pedido),
     temperature: 0.8,
+  });
+  return object.questoes;
+}
+
+// Questão usada como base/modelo (campos que importam para o prompt).
+export type QuestaoBase = {
+  materia: Materia;
+  assunto: string;
+  dificuldade: Dificuldade;
+  textoApoio: string | null;
+  enunciado: string;
+  alternativas: { id: string; texto: string }[];
+  gabarito: string;
+};
+
+function descreverQuestao(q: QuestaoBase): string {
+  const alts = q.alternativas.map((a) => `${a.id}) ${a.texto}`).join("\n");
+  const apoio = q.textoApoio ? `${q.textoApoio}\n` : "";
+  return `${apoio}${q.enunciado}\n${alts}\n(Gabarito: ${q.gabarito})`;
+}
+
+/** Explica uma questão de forma didática (sob demanda, ao errar). Retorna texto. */
+export async function explicarQuestaoCom(
+  model: LanguageModel,
+  q: QuestaoBase,
+): Promise<string> {
+  const { text } = await generateText({
+    model,
+    system:
+      "Você é um tutor que explica questões do vestibular da EBMSP (banca Strix) para uma estudante de Ensino Médio. Explique de forma didática, clara e factualmente correta, em português do Brasil.",
+    prompt: `A estudante ERROU a questão abaixo. Explique POR QUE a alternativa ${q.gabarito} é a correta e, brevemente, por que as principais alternativas erradas estão erradas. Seja direto e acolhedor (máx. ~130 palavras). Não repita o enunciado inteiro.
+
+--- QUESTÃO ---
+${descreverQuestao(q)}
+--- FIM ---`,
+    temperature: 0.4,
+  });
+  return text.trim();
+}
+
+/** Gera questões inéditas usando uma questão real como MODELO de estilo/assunto. */
+export async function gerarBaseadaCom(
+  model: LanguageModel,
+  base: QuestaoBase,
+  opts: { quantidade: number; dificuldade?: Dificuldade },
+): Promise<QuestaoGerada[]> {
+  const prompt = `Use a QUESTÃO MODELO abaixo como referência de assunto, habilidade cobrada e estilo da banca. Gere ${opts.quantidade} questão(ões) INÉDITA(S) sobre o MESMO assunto e no mesmo padrão — NÃO copie nem parafraseie a original; crie estímulos e situações novos, com gabarito correto.
+Matéria: ${rotuloMateria(base.materia)} (campo "materia" = "${base.materia}"). Assunto: ${base.assunto}.
+${opts.dificuldade ? `Dificuldade: ${opts.dificuldade}.` : "Mantenha dificuldade semelhante à da questão modelo."}
+
+--- QUESTÃO MODELO ---
+${descreverQuestao(base)}
+--- FIM ---`;
+  const { object } = await generateObject({
+    model,
+    schema: z.object({ questoes: z.array(questaoGeradaSchema) }),
+    system: SISTEMA_STRIX,
+    prompt,
+    temperature: 0.85,
   });
   return object.questoes;
 }

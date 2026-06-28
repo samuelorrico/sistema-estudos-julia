@@ -4,9 +4,11 @@ import { db } from "@/db";
 import { questoes } from "@/db/schema";
 import {
   gerarQuestoes,
+  gerarQuestoesBaseadas,
   questaoGeradaSchema,
   type QuestaoGerada,
 } from "@/lib/agente";
+import { questaoPorId } from "@/db/queries";
 import { ehDificuldade, ehMateria } from "@/lib/materias";
 
 export type ResultadoGeracao =
@@ -36,6 +38,42 @@ export async function gerarAction(input: {
       dificuldade,
       quantidade,
     });
+    return { ok: true, questoes: geradas };
+  } catch (e) {
+    return {
+      ok: false,
+      erro: e instanceof Error ? e.message : "Falha ao gerar questões.",
+    };
+  }
+}
+
+export async function gerarBaseadaAction(input: {
+  questaoBaseId: number;
+  dificuldade?: string;
+  quantidade: number;
+}): Promise<ResultadoGeracao> {
+  try {
+    const base = await questaoPorId(input.questaoBaseId);
+    if (!base) return { ok: false, erro: "Questão modelo não encontrada." };
+    const dificuldade = ehDificuldade(input.dificuldade)
+      ? input.dificuldade
+      : undefined;
+    const quantidade = Math.min(
+      Math.max(Math.trunc(input.quantidade) || 3, 1),
+      6,
+    );
+    const geradas = await gerarQuestoesBaseadas(
+      {
+        materia: base.materia,
+        assunto: base.assunto,
+        dificuldade: base.dificuldade,
+        textoApoio: base.textoApoio,
+        enunciado: base.enunciado,
+        alternativas: base.alternativas,
+        gabarito: base.gabarito,
+      },
+      { quantidade, dificuldade },
+    );
     return { ok: true, questoes: geradas };
   } catch (e) {
     return {

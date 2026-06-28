@@ -13,9 +13,11 @@ export function SessaoSimulado({
   questoes,
   // < 6/30 elimina no edital PROSEL 2026.2 (20%); escala para provas de outro tamanho.
   corte = Math.max(1, Math.round(questoes.length / 5)),
+  iaDisponivel = false,
 }: {
   questoes: Questao[];
   corte?: number;
+  iaDisponivel?: boolean;
 }) {
   const total = questoes.length;
   const CORTE_ELIMINATORIO = corte;
@@ -131,7 +133,12 @@ export function SessaoSimulado({
                         : "Em branco"}
                   </span>
                 </div>
-                <QuestaoView questao={q} selecionada={resp} revelado />
+                <QuestaoView
+                  questao={q}
+                  selecionada={resp}
+                  revelado
+                  iaDisponivel={iaDisponivel}
+                />
               </li>
             );
           })}

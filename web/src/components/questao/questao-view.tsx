@@ -1,6 +1,10 @@
 "use client";
 
+import { useState, useTransition } from "react";
+
 import { Icon } from "@/components/ui/icon";
+import { GeminiLogo } from "@/components/ui/gemini-logo";
+import { explicarAction } from "@/actions/explicacao";
 import { cn } from "@/lib/utils";
 import {
   DIFICULDADE_LABEL,
@@ -24,6 +28,8 @@ type Props = {
   revelado: boolean;
   /** ao marcar uma alternativa (omitido = somente leitura/revisão) */
   onSelecionar?: (id: string) => void;
+  /** permite gerar explicação por IA ao errar (precisa de chave configurada) */
+  iaDisponivel?: boolean;
   indice?: number;
   total?: number;
 };
@@ -54,11 +60,34 @@ export function QuestaoView({
   selecionada,
   revelado,
   onSelecionar,
+  iaDisponivel = false,
   indice,
   total,
 }: Props) {
   const acertou = revelado && selecionada === questao.gabarito;
   const selecionavel = !!onSelecionar && !revelado;
+
+  const [explicacaoIA, setExplicacaoIA] = useState<string | null>(null);
+  const [erroIA, setErroIA] = useState<string | null>(null);
+  const [gerando, startGerar] = useTransition();
+
+  function gerarExplicacao() {
+    setErroIA(null);
+    startGerar(async () => {
+      const r = await explicarAction(questao.id);
+      if (r.ok) setExplicacaoIA(r.explicacao);
+      else setErroIA(r.erro);
+    });
+  }
+
+  // Mostra o botão de IA só ao errar uma questão real (id do banco) sem explicação salva.
+  const podeExplicarIA =
+    revelado &&
+    !acertou &&
+    iaDisponivel &&
+    questao.id > 0 &&
+    !questao.explicacao &&
+    !explicacaoIA;
 
   return (
     <div className="flex flex-col gap-4">
@@ -178,6 +207,40 @@ export function QuestaoView({
             <p className="mt-1 whitespace-pre-line text-foreground/80">
               {questao.explicacao}
             </p>
+          )}
+
+          {/* Explicação por IA, sob demanda, ao errar */}
+          {explicacaoIA && (
+            <div className="mt-2 flex flex-col gap-1 rounded-lg border border-border bg-background/60 px-3 py-2 text-foreground/90">
+              <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                <GeminiLogo /> Explicação do assistente
+              </span>
+              <p className="whitespace-pre-line">{explicacaoIA}</p>
+            </div>
+          )}
+
+          {podeExplicarIA && (
+            <button
+              type="button"
+              onClick={gerarExplicacao}
+              disabled={gerando}
+              className="mt-2 inline-flex items-center gap-1.5 self-start rounded-lg border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-60"
+            >
+              {gerando ? (
+                <>
+                  <Icon name="progress_activity" className="animate-spin text-[18px]" />
+                  Gerando explicação...
+                </>
+              ) : (
+                <>
+                  Dúvidas? Gerar explicação <GeminiLogo />
+                </>
+              )}
+            </button>
+          )}
+
+          {erroIA && (
+            <p className="mt-2 text-xs text-muted-foreground">{erroIA}</p>
           )}
         </div>
       )}

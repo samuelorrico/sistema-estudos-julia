@@ -7,7 +7,13 @@ import { Button } from "@/components/ui/button";
 import { registrarTentativa } from "@/actions/tentativas";
 import type { Questao } from "@/db/schema";
 
-export function SessaoTreino({ questoes }: { questoes: Questao[] }) {
+export function SessaoTreino({
+  questoes,
+  iaDisponivel = false,
+}: {
+  questoes: Questao[];
+  iaDisponivel?: boolean;
+}) {
   const total = questoes.length;
   const [idx, setIdx] = useState(0);
   const [selecionada, setSelecionada] = useState<string | null>(null);
@@ -98,6 +104,7 @@ export function SessaoTreino({ questoes }: { questoes: Questao[] }) {
           selecionada={selecionada}
           revelado={revelado}
           onSelecionar={responder}
+          iaDisponivel={iaDisponivel}
         />
       </div>
 

@@ -4,13 +4,17 @@ import { anthropic } from "@ai-sdk/anthropic";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
 import {
+  explicarQuestaoCom,
+  gerarBaseadaCom,
   gerarQuestoesCom,
   type PedidoGeracao,
+  type QuestaoBase,
   type QuestaoGerada,
 } from "@/lib/geracao";
+import type { Dificuldade } from "@/lib/materias";
 
 export { questaoGeradaSchema } from "@/lib/geracao";
-export type { PedidoGeracao, QuestaoGerada } from "@/lib/geracao";
+export type { PedidoGeracao, QuestaoBase, QuestaoGerada } from "@/lib/geracao";
 
 // Provider de IA: usa o Gemini (grátis) se a chave do Google existir; senão,
 // o Claude. Dá pra começar de graça e trocar só adicionando a outra chave.
@@ -39,14 +43,28 @@ export function provedorAtivo(): string | null {
   return resolverModelo()?.nome ?? null;
 }
 
+const ERRO_SEM_CHAVE =
+  "Nenhuma chave de IA configurada. Defina GOOGLE_GEMINI_API_KEY (grátis) ou ANTHROPIC_API_KEY em web/.env.local.";
+
 export async function gerarQuestoes(
   pedido: PedidoGeracao,
 ): Promise<QuestaoGerada[]> {
   const m = resolverModelo();
-  if (!m) {
-    throw new Error(
-      "Nenhuma chave de IA configurada. Defina GOOGLE_GEMINI_API_KEY (grátis) ou ANTHROPIC_API_KEY em web/.env.local.",
-    );
-  }
+  if (!m) throw new Error(ERRO_SEM_CHAVE);
   return gerarQuestoesCom(m.modelo, pedido);
+}
+
+export async function explicarQuestao(q: QuestaoBase): Promise<string> {
+  const m = resolverModelo();
+  if (!m) throw new Error(ERRO_SEM_CHAVE);
+  return explicarQuestaoCom(m.modelo, q);
+}
+
+export async function gerarQuestoesBaseadas(
+  base: QuestaoBase,
+  opts: { quantidade: number; dificuldade?: Dificuldade },
+): Promise<QuestaoGerada[]> {
+  const m = resolverModelo();
+  if (!m) throw new Error(ERRO_SEM_CHAVE);
+  return gerarBaseadaCom(m.modelo, base, opts);
 }

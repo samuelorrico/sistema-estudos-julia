@@ -2,12 +2,14 @@ import Link from "next/link";
 
 import { TutorGerador } from "@/components/tutor/tutor-gerador";
 import { provedorAtivo, temChaveIA } from "@/lib/agente";
+import { questoesParaPicker } from "@/db/queries";
 
 export const dynamic = "force-dynamic";
 
-export default function TutorPage() {
+export default async function TutorPage() {
   const temChave = temChaveIA();
   const provedor = provedorAtivo();
+  const picker = temChave ? await questoesParaPicker() : [];
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10">
@@ -20,8 +22,9 @@ export default function TutorPage() {
         </Link>
         <h1 className="mt-1 text-2xl font-bold tracking-tight">Tutor de IA</h1>
         <p className="text-sm text-muted-foreground">
-          Gere questões inéditas no padrão da banca (Strix/EBMSP) quando o banco
-          não bastar — gerais ou de uma matéria/assunto específico.
+          Gere questões inéditas no padrão da banca (Strix/EBMSP): por
+          matéria/assunto ou a partir de uma questão existente. Responda na hora
+          para conferir o gabarito.
         </p>
         {temChave && provedor && (
           <p className="text-xs text-muted-foreground">Usando: {provedor}</p>
@@ -29,7 +32,7 @@ export default function TutorPage() {
       </header>
 
       {temChave ? (
-        <TutorGerador />
+        <TutorGerador questoes={picker} />
       ) : (
         <div className="flex flex-col gap-3 rounded-xl border bg-card p-6 text-sm ring-1 ring-foreground/10">
           <p className="font-medium">

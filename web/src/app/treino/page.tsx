@@ -15,6 +15,7 @@ import {
   type Dificuldade,
   type Materia,
 } from "@/lib/materias";
+import { temChaveIA } from "@/lib/agente";
 
 // Depende de searchParams + ordenação aleatória → sempre dinâmica.
 export const dynamic = "force-dynamic";
@@ -74,7 +75,7 @@ export default async function TreinoPage({
       />
 
       {questoes.length > 0 ? (
-        <SessaoTreino key={chave} questoes={questoes} />
+        <SessaoTreino key={chave} questoes={questoes} iaDisponivel={temChaveIA()} />
       ) : (
         <div className="rounded-xl border bg-card p-8 text-center text-sm text-muted-foreground ring-1 ring-foreground/10">
           Nenhuma questão encontrada para esse filtro. Tente afrouxar os

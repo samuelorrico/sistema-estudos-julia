@@ -8,6 +8,7 @@ import {
   questoesPorFonte,
 } from "@/db/queries";
 import { ehAreaSaude, rotuloFonte } from "@/lib/materias";
+import { temChaveIA } from "@/lib/agente";
 
 // Cada acesso monta/escolhe um simulado → sempre dinâmica.
 export const dynamic = "force-dynamic";
@@ -113,7 +114,7 @@ export default async function SimuladoPage({
       </header>
 
       {questoes.length > 0 ? (
-        <SessaoSimulado questoes={questoes} />
+        <SessaoSimulado questoes={questoes} iaDisponivel={temChaveIA()} />
       ) : (
         <div className="rounded-xl border bg-card p-8 text-center text-sm text-muted-foreground ring-1 ring-foreground/10">
           Não há questões suficientes no banco para montar o simulado.
