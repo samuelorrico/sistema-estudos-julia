@@ -98,6 +98,8 @@ _(nenhum ativo)_
 | 011 | Revisão de qualidade do banco: limpeza de créditos bibliográficos vazados no início de 16 enunciados (atribuição de figura) — `limpar_credito` no parser; re-seed | 2026-06-27 | — | ✅ Done |
 | 012 | Ampliar flashcards 31 → 64 (curadoria alinhada às provas EBMSP, peso em Português/Biologia) | 2026-06-28 | 18d58d7 | ✅ Done |
 | 013 | Painel de desempenho (M2): migração 0003 `tentativas`; registro Treino/Simulado; `/desempenho` (resumo + por matéria + assuntos a reforçar) + botão de zerar | 2026-06-28 | — | ✅ Done |
+| 014 | IA sob demanda: explicação ao errar (botão Gemini) + tutor "a partir de uma questão" + questões geradas respondíveis | 2026-06-28 | 39c0a69 | ✅ Done |
+| 015 | README completo (com todas as dependências) + versão DEMO (`demo-questoes.ts`, `db:seed:demo`, `.env.example`) para showcase no GitHub sem provas reais nem interferir no banco da Julia | 2026-06-28 | — | ✅ Done |
 
 ---
 
