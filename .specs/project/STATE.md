@@ -124,7 +124,7 @@ _(nenhum ativo)_
 - [x] ~~Hospedar figuras (Vercel Blob)~~ — `scripts/upload-figuras.ts` + `NEXT_PUBLIC_BLOB_BASE`; 75 figuras enviadas
 - [ ] **Vercel:** setar env (`DATABASE_URL`, `APP_PASSCODE`, `GOOGLE_GEMINI_API_KEY`, `BLOB_READ_WRITE_TOKEN`, `NEXT_PUBLIC_BLOB_BASE`) + redeploy
 - [x] ~~**Painel de desempenho + histórico de questões (M2)**~~ — feito (migração 0003 `tentativas`; registro no Treino/Simulado via server actions; `/desempenho` com resumo, acertos por matéria, "assuntos para reforçar" e **botão de zerar histórico** para limpar os testes antes de entregar à Juju).
-- [ ] Cladograma da UNIT Q33 e digestão da ZARNS Q33 são vetoriais (sem raster) — 2 questões sem figura
+- [x] ~~Cladograma da UNIT Q33 e digestão da ZARNS Q33 (figuras vetoriais)~~ — resolvido: região da página renderizada como PNG (PyMuPDF `get_pixmap(clip=...)`), enviada ao Blob; ZARNS Q33 também teve o enunciado (que estava vazio) transcrito da figura. Re-seed feito.
 
 ---
 
